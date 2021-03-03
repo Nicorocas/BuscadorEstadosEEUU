@@ -2,7 +2,8 @@ html, body {
     height: 100%; width: 100%; margin: 0; 
   } 
   body{
-    background-color:white; overflow:hidden; 
+    background-image: url(./amarillo5k.jpg);
+     overflow:hidden; 
     font-family: "Trebuchet MS"; 
   }
    #map {
@@ -28,7 +29,7 @@ html, body {
     padding-left:20px;
   }
   #rightPane{
-    background-color:white;
+    background-image: url(./amarillo5k.jpg);
     color:#3f3f3f;
     border: solid 2px #224a54;
     width:20%;
@@ -36,7 +37,7 @@ html, body {
   #leftPane{
     margin: 5px;
     padding:2px;
-    background-color:white;
+    background-image: url(./amarillo5k.jpg);
     color:#3f3f3f;
     border: solid 2px #224a54;
     width:20%;
@@ -45,11 +46,11 @@ html, body {
   #footer {
     margin: 2px;
     border: solid 2px #224a54;
-    background-color:#ecefe4;color:#3f3f3f;
+    background-image: url(./banner.jpg);
    font-size:10pt; text-align:center; height:40px;
   }
   .dijitTabInnerDiv{
-    background-color:#ecefe4;
+    background-image: url(./amarillo5k.jpg);
   }
   #tabs{
     padding:5px;
