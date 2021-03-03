@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title></title>
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.8/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.27/esri/css/esri.css">
+    <link rel="stylesheet" href="css.css"/>
+
+    <script>var dojoConfig = { parseOnLoad: true };</script>
+    <script src="https://js.arcgis.com/3.27/"></script>
+
+    <style>
+       #search {
+            display: block;
+            position: absolute;
+            z-index: 2;
+            top: 10px;
+            right: 10px;
+          }
+        #BasemapGalerry{
+            position:absolute;
+            z-index: 50;
+        }  
+    </style>
+    <script>
+
+    var map;
+    var tb;
+    require([
+        "esri/map",
+        "dojo/on",
+
+        "esri/layers/FeatureLayer",
+        "esri/dijit/Legend",
+        "esri/dijit/Search",
+        "esri/dijit/OverviewMap",
+
+        "esri/dijit/BasemapGallery",
+        "esri/dijit/Scalebar",
+
+        "esri/dijit/Popup", 
+        "esri/dijit/PopupTemplate",
+        "dojo/dom-class", 
+        "dojo/dom-construct",
+
+        "esri/symbols/FillSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "dojo/_base/Color",
+        "dojo/_base/array",
+
+        "dijit/layout/TabContainer",
+        "dijit/layout/ContentPane",
+        "dijit/layout/BorderContainer",
+        "dojo/domReady!"],
+        function(
+          Map, on,
+          FeatureLayer, Legend,Search,OverviewMap,
+          BasemapGallery, Scalebar,
+          Popup,PopupTemplate,domClass, domConstruct,
+          FillSymbol,SimpleLineSymbol,Color, array,
+
+        ) {
+
+
+            on(dojo.byId("progButtonNode"),"click",fQueryEstados);
+            
+            function fQueryEstados(){
+            alert("Evento del botón Seleccionar ciudades");
+            }
+
+            map = new Map("map", {
+            basemap: "topo",
+            center: [-100.45,37.75], // long, lat
+            zoom: 4,
+            sliderStyle: "small",
+            infoWindow: popup
+            });
+
+            map.on("load",function(evt){
+            map.resize();
+            map.reposition();
+
+            });
+            //1 despues de añadir infowindow :popup a map, toca añadir una variable con los campos
+            const CamposEstados = ["state_name", "pop2000", "pop00_sqmi" , "st_area"];
+            /// Pues empezamos cargando capas
+            var lista_featureLayer = [fc1,fc2,fc3]
+            var fc1 = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/0")
+            var fc2 = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/1")
+            //estados fc3 capa principal le establecemos los requisitos del popUp
+            var fc3 = new FeatureLayer("http://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2",{
+                outFields: CamposEstados,
+                mode: FeatureLayer.MODE_ONDEMAND,
+                outFields: ["*"],
+                infoTemplate: template,
+                
+            })
+            map.infoWindow.resize(155,75)
+            fc3.setOpacity(0.30)
+            
+            
+            
+            map.addLayers([fc1,fc2,fc3])
+            /// capas cargadas, hora de añadir los primeros Widgets:
+            /// El primero la leyenda:
+            var legend = new Legend({
+            map: map
+            }, "legendDiv");
+            /// Segundo Widget Shearch
+            var s = new Search({
+            map: map
+            },"search");
+            /// Tercer Widget Overview
+            var overviewMapDijit = new OverviewMap({
+                map: map,
+                visible: true
+                });
+            overviewMapDijit.startup();
+            /// BasemapGallery
+            var basemapGallery = new BasemapGallery({
+                showArcGISBasemaps: true,
+                map: map
+                }, "basemapGallery");
+                basemapGallery.startup();
+            /// escala abajo
+            var scalebar = new Scalebar({
+                map: map,
+                scalebarUnit: "dual"
+                });
+            /// Durisimos Pop up y template para la capa de estados
+            
+            // creamos el simbolo y el popup
+            var symbolSelected =new FillSymbol(new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,));
+                symbolSelected.setColor(new Color([255,255,0,0.5]))
+                
+            
+            var popup = new Popup({
+                fillSymbol: symbolSelected,
+                titleInBody: true
+            }, domConstruct.create("div"));
+            //Add the dark theme which is customized further in the <style> tag at the top of this page
+            domClass.add(popup.domNode, "dark");
+
+            // aqui viene el template lo que sera la base del popup, tanto el formato como el contenido, En la Feature layer se pone infoTemplate: template
+
+            var template = new PopupTemplate({
+                title: "Estado, Estados unidos",
+                description: "Estado de  {state_name}, Tiene un total de {pop2000} habitantes y una densidad de poblacion de {pop00_sqmi}. El area del estado es de {st_area}",
+                fieldInfos: [{ //define field infos so we can specify an alias
+                    fieldName: "st_area",
+                    label: "Superficie total del estado"
+                },
+                {
+                    fieldName: "pop2000",
+                    label: "Poblacion Total"
+                }],
+                mediaInfos:[{ //define the bar chart
+                    caption: "",
+                    type:"barchart",
+                    value:{
+                        theme: "Dollar",
+                        fields:["pop2000","st_area","pop00_sqmi"]
+                    }
+                }]
+            });
+
+            // depues del popup empezamos con la parte de codigo para hacer un task locator 
+
+
+
+        });
+
+
+
+    </script>
+
+  </head>
+
+  <body class="claro">
+    <div id="mainWindow"
+         data-dojo-type="dijit.layout.BorderContainer"
+         data-dojo-props="design:'headline', gutters:false"
+         style="width:100%; height:100%;">
+
+      <div id="header"
+           data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'top'">
+
+        Master GIS ESRI España
+       <div id="subheader">Nombre Apellidos</div>
+
+      </div>
+      <div data-dojo-type="dijit.layout.ContentPane" id="leftPane" data-dojo-props="region:'left'">
+        <div data-dojo-type="dijit.layout.TabContainer">
+          <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Buscar', selected:true">
+            <div id="search"></div>
+          </div>
+          <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="title:'Leyenda', selected:true">
+            
+            <div id="legendDiv"></div>
+          </div>
+          
+         
+
+        </div>
+      </div>
+
+      <div id="map" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'center'">
+        <!---BAsemapGallery con swich-->
+      <div style="position:absolute; right:1000px; top:10px; z-Index:999;">
+        <div data-dojo-type="dijit/TitlePane" 
+             data-dojo-props="title:'Switch Basemap', open:true">
+          <div data-dojo-type="dijit/layout/ContentPane" style="width:380px; height:280px; overflow:auto;">
+            <div id="basemapGallery"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      
+
+      <div id="footer" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'bottom'">
+
+        <label for="dtb">Introduzca el nombre de un estado:</label> <input id="dtb" data-dojo-type="dijit/form/TextBox" value="Washington" />
+        <button id="progButtonNode" type="button">Ir al estado</button>
+      </div>
+
+    </div>
+  </body>
+
+</html>
