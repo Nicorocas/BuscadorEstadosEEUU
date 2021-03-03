@@ -2,7 +2,9 @@ html, body {
     height: 100%; width: 100%; margin: 0; 
   } 
   body{
-    background-image: url(./amarillo5k.jpg);
+    background-image: url(./Imagenes/chulocurriu.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
      overflow:hidden; 
     font-family: "Trebuchet MS"; 
   }
@@ -17,7 +19,7 @@ html, body {
     height: 100% !important;
   }
   #header {
-    background-image: url(banner.jpg); background-repeat: repeat-x;
+    background-image: url(./Imagenes/banner.jpg); background-repeat: repeat-x;
     margin: 2px;
     border: solid 4px #224a54;
     color:white; font-size:18pt; 
@@ -29,7 +31,7 @@ html, body {
     padding-left:20px;
   }
   #rightPane{
-    background-image: url(./amarillo5k.jpg);
+    background-image: url(./Imagenes/banner.jpg);
     color:#3f3f3f;
     border: solid 2px #224a54;
     width:20%;
@@ -37,7 +39,7 @@ html, body {
   #leftPane{
     margin: 5px;
     padding:2px;
-    background-image: url(./amarillo5k.jpg);
+    background-image: url(./Imagenes/banner.jpg);
     color:#3f3f3f;
     border: solid 2px #224a54;
     width:20%;
@@ -46,11 +48,11 @@ html, body {
   #footer {
     margin: 2px;
     border: solid 2px #224a54;
-    background-image: url(./banner.jpg);
+    background-image: url(./Imagenes/banner.jpg);
    font-size:10pt; text-align:center; height:40px;
   }
   .dijitTabInnerDiv{
-    background-image: url(./amarillo5k.jpg);
+    background-image: url(./Imagenes/amarillo5k.jpg);
   }
   #tabs{
     padding:5px;

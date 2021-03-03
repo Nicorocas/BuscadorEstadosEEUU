@@ -184,8 +184,8 @@
             // aqui viene el template lo que sera la base del popup, tanto el formato como el contenido, En la Feature layer se pone infoTemplate: template
 
             var template = new PopupTemplate({
-                title: "Estado, Estados unidos",
-                description: "Estado de  {state_name}, Tiene un total de {pop2000} habitantes y una densidad de poblacion de {pop00_sqmi}. El area del estado es de {st_area}",
+                title: "Estado de {state_name}",
+                description: "Tiene un total de {pop2000} habitantes y una densidad de poblacion de {pop00_sqmi}. El area del estado es de {st_area}",
                 fieldInfos: [{ //define field infos so we can specify an alias
                     fieldName: "st_area",
                     label: "Superficie total del estado",
@@ -208,8 +208,8 @@
 
             ///// siguiente template ahora de ciudades
             var template1 = new PopupTemplate({
-                title: "Cuidad",
-                description: "ciudad de  {capital}, Tiene un total de {pop2000} habitantes. El area del estado es de {areaname}",
+                title: "Cuidad de {areaname}",
+                description: "Tiene un total de {pop2000} habitantes. El area del estado es de {capital}",
                 fieldInfos: [{ //define field infos so we can specify an alias
                     fieldName: "st_area",
                     label: "Superficie total del estado",
@@ -231,7 +231,7 @@
             });
             //Cargamos el mapa
             map = new Map("map", {
-            basemap: "topo",
+            basemap: "dark-gray",
             center: [-100.45,37.75], // long, lat
             zoom: 4,
             sliderStyle: "small",
@@ -282,8 +282,11 @@
             /// Tercer Widget Overview
             var overviewMapDijit = new OverviewMap({
                 map: map,
-                visible: true
+                visible: true,
+                
+
                 });
+            overviewMapDijit.resize(200,200)
             overviewMapDijit.startup();
             /// BasemapGallery
             var basemapGallery = new BasemapGallery({
