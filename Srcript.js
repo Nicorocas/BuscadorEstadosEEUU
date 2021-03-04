@@ -278,7 +278,7 @@
                     var BOTON = new Button({
                         label: "Selecionar con Buffer",
                         onClick: initDrawTool2,
-                        iconClass: "fondoamarillos",
+                        
                     }, "progButtonNode2");});
              
              var tbDraw2;
